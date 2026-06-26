@@ -5,59 +5,68 @@ import { startEmissionTimer, startPassiveEffects } from './systems.js';
 import { checkDailyBonus, buyUpgrade, buyArtifact, levelUp } from './gameLogic.js';
 import { gameState } from './state.js';
 
-window.buyUpgrade = buyUpgrade;
-window.buyArtifact = buyArtifact;
-
 let hasInteracted = false;
 
 document.addEventListener('DOMContentLoaded', () => {
     loadGame();
     initCustomCursor();
-    
-    initAudio(); 
+    initAudio();
 
-    setTimeout(hideLoader, 2000);
+    setTimeout(hideLoader, 1400);
 
     startEmissionTimer();
-    startPassiveEffects(); 
+    startPassiveEffects();
     checkDailyBonus();
 
     updateUI();
-    
+
     setupAudioControls();
+    setupShopEvents();
     setupMainClickEvent();
 });
 
+function setupShopEvents() {
+    document.querySelectorAll('[data-upgrade]').forEach((button) => {
+        button.addEventListener('click', () => buyUpgrade(button.dataset.upgrade));
+    });
+
+    document.querySelectorAll('[data-artifact]').forEach((button) => {
+        button.addEventListener('click', () => buyArtifact(button.dataset.artifact));
+    });
+}
+
 function setupMainClickEvent() {
-    const artifact = document.getElementById('main-artifact');
-    if (artifact) {
-        artifact.onclick = (e) => {
-            
-            if (!hasInteracted) {
-                hasInteracted = true;
-                startMusic();
-            }
-            
-            gameState.money += gameState.clickPower;
-            
-            playSound('click'); 
-            
-            const currentArtProgress = gameState.artifactData.find(data => data.id === gameState.currentArtifactId);
-            
-            if (currentArtProgress) {
-                currentArtProgress.currentClicks++;
-                if(currentArtProgress.currentClicks >= currentArtProgress.clicksForNextLevel) {
-                    levelUp(currentArtProgress);
-                }
-            }
+    const artifactButton = document.getElementById('artifact-button');
+    const artifactImage = document.getElementById('main-artifact');
 
-            createFloatingText(e.clientX, e.clientY, `+${gameState.clickPower} KPN`);
-            
-            artifact.style.transform = "scale(0.95)";
-            setTimeout(() => artifact.style.transform = "scale(1)", 50);
+    if (!artifactButton || !artifactImage) return;
 
-            saveGame();
-            updateUI();
-        };
-    }
+    artifactButton.addEventListener('click', (event) => {
+        if (!hasInteracted) {
+            hasInteracted = true;
+            startMusic();
+        }
+
+        gameState.money += gameState.clickPower;
+        playSound('click');
+
+        const currentArtProgress = gameState.artifactData.find((data) => data.id === gameState.currentArtifactId);
+
+        if (currentArtProgress) {
+            currentArtProgress.currentClicks += 1;
+            if (currentArtProgress.currentClicks >= currentArtProgress.clicksForNextLevel) {
+                levelUp(currentArtProgress);
+            }
+        }
+
+        createFloatingText(event.clientX, event.clientY, `+${gameState.clickPower} KPN`);
+
+        artifactImage.style.transform = 'scale(0.95)';
+        setTimeout(() => {
+            artifactImage.style.transform = '';
+        }, 50);
+
+        saveGame();
+        updateUI();
+    });
 }

@@ -58,8 +58,7 @@ export function buyArtifact(artifactId) {
             return;
         }
         
-        gameState.currentArtifactId = artifactId; 
-        document.getElementById('main-artifact').src = artConfig.img;
+        gameState.currentArtifactId = artifactId;
         showNotification(`Артефакт "${artConfig.name}" экипирован!`, "success");
         
         saveGame();
@@ -79,9 +78,8 @@ export function buyArtifact(artifactId) {
         gameState.money -= artConfig.price; 
         artProgress.isOwned = true; 
         
-        gameState.currentArtifactId = artConfig.id; 
-        document.getElementById('main-artifact').src = artConfig.img;
-        
+        gameState.currentArtifactId = artConfig.id;
+
         showNotification(`Новый артефакт "${artConfig.name}" куплен!`, "success");
         playSound('buy');
         

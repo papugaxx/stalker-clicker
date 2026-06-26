@@ -3,16 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Clicker Stalker</title>
+    <meta name="description" content="S.T.A.L.K.E.R. Clicker — атмосферная браузерная clicker-игра про артефакты, купоны, апгрейды и выбросы в Зоне.">
+    <title>S.T.A.L.K.E.R. Clicker</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Russo+One&family=Share+Tech+Mono&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+    <noscript>Для запуска игры нужен включенный JavaScript.</noscript>
 
-    <div id="loader" class="loader-screen">
+    <div id="loader" class="loader-screen" aria-live="polite">
         <div class="loader-content">
             <h1>ЗАГРУЗКА ДАННЫХ КПК...</h1>
-            <div class="loader-bar">
+            <div class="loader-bar" aria-hidden="true">
                 <div class="loader-progress"></div>
             </div>
             <p>Синхронизация с сетью сталкеров</p>
@@ -20,12 +24,11 @@
     </div>
 
     <div class="game-wrapper">
-        
         <header class="hud-header">
             <div class="hud-group">
                 <span class="label">КОШЕЛЕК:</span>
                 <div class="wallet">
-                    <img src="assets/icon_ru.png" alt="Купоны" class="icon-small"> 
+                    <img src="assets/icon_ru.png" alt="Купоны" class="icon-small">
                     <span id="money-counter">0</span> KPN
                 </div>
             </div>
@@ -40,99 +43,98 @@
                 <span id="emission-timer" class="timer">01:30</span>
             </div>
 
-            <div class="hud-group settings">
-                <button id="btn-music" class="btn-mini" title="Музыка">♪</button>
-                <button id="btn-sound" class="btn-mini" title="Звуки">🔊</button>
+            <div class="hud-group settings" aria-label="Настройки звука">
+                <button id="btn-music" class="btn-mini" type="button" aria-label="Включить или выключить музыку" title="Музыка">♪</button>
+                <button id="btn-sound" class="btn-mini" type="button" aria-label="Включить или выключить звуки" title="Звуки">🔊</button>
             </div>
         </header>
 
         <main class="main-area">
-            
-            <aside class="shop-panel left-panel">
+            <aside class="shop-panel left-panel" aria-label="Бонусы">
                 <h2>БОНУСЫ</h2>
                 <div class="shelf">
-                    <div class="shop-item" onclick="buyUpgrade('protection')">
-                        <img src="assets/icon_shield.png" alt="Защита" class="item-img">
-                        <div class="item-info">
-                            <h4>ЗАЩИТА</h4>
-                            <p>Защита от выброса +5%</p>
+                    <button class="shop-item" type="button" data-upgrade="protection">
+                        <img src="assets/icon_shield.png" alt="" class="item-img">
+                        <span class="item-info">
+                            <span class="item-title">ЗАЩИТА</span>
+                            <span class="item-description">Защита от выброса +5%</span>
                             <span class="price" id="price-protection">100 KPN</span>
-                        </div>
-                    </div>
-                    
-                    <div class="shop-item" onclick="buyUpgrade('click')">
-                        <img src="assets/icon_knife.png" alt="Нож" class="item-img">
-                        <div class="item-info">
-                            <h4>АПГРЕЙД КЛИКА</h4>
-                            <p>Клик +2 KPN</p>
+                        </span>
+                    </button>
+
+                    <button class="shop-item" type="button" data-upgrade="click">
+                        <img src="assets/icon_knife.png" alt="" class="item-img">
+                        <span class="item-info">
+                            <span class="item-title">АПГРЕЙД КЛИКА</span>
+                            <span class="item-description">Клик +2 KPN</span>
                             <span class="price" id="price-click">250 KPN</span>
-                        </div>
-                    </div>
+                        </span>
+                    </button>
                 </div>
             </aside>
 
-            <section class="artifact-zone">
-                <div class="artifact-container">
-                    <div class="glow-effect"></div>
-                    <img src="assets/art_jellyfish.png" alt="Артефакт" class="artifact-img floating" id="main-artifact">
-                </div>
-                
+            <section class="artifact-zone" aria-label="Активный артефакт">
+                <button class="artifact-button" id="artifact-button" type="button" aria-label="Собрать купоны с артефакта">
+                    <span class="artifact-container">
+                        <span class="glow-effect"></span>
+                        <img src="assets/art_jellyfish.png" alt="Артефакт Медуза" class="artifact-img floating" id="main-artifact">
+                    </span>
+                </button>
+
                 <div class="artifact-stats">
                     <h2 id="art-name">МЕДУЗА</h2>
                     <p>Уровень: <span id="art-level">1</span> / 10</p>
-                    <div class="progress-bar-container">
+                    <div class="progress-bar-container" aria-hidden="true">
                         <div class="progress-bar-fill" id="progress-bar-fill" style="width: 10%;"></div>
                     </div>
                     <p class="debuff">Дебафф: <span class="rad-text" id="debuff-display">Радиация (Слабая)</span></p>
                 </div>
             </section>
 
-            <aside class="shop-panel right-panel">
+            <aside class="shop-panel right-panel" aria-label="Артефакты">
                 <h2>АРТЕФАКТЫ</h2>
                 <div class="shelf" id="artifact-shop-container">
-                    
-                    <div class="shop-item owned active" id="jellyfish-item" onclick="buyArtifact('jellyfish')">
-                        <img src="assets/art_jellyfish.png" alt="Медуза" class="item-img-small">
-                        <div class="item-info">
-                            <h4>Медуза</h4>
+                    <button class="shop-item owned active" id="jellyfish-item" type="button" data-artifact="jellyfish">
+                        <img src="assets/art_jellyfish.png" alt="" class="item-img-small">
+                        <span class="item-info">
+                            <span class="item-title">Медуза</span>
                             <span class="status">ИСПОЛЬЗУЕТСЯ</span>
-                        </div>
-                    </div>
+                        </span>
+                    </button>
 
-                    <div class="shop-item locked" id="stoneflower-item" onclick="buyArtifact('stoneflower')">
-                        <div class="lock-overlay">🔒</div>
-                        <img src="assets/art_stoneflower.png" alt="Каменный цветок" class="item-img-small">
-                        <div class="item-info">
-                            <h4>Каменный Цветок</h4>
-                            <p id="stoneflower-price-label">1000 KPN</p>
-                            <span class="price" id="price-stoneflower"></span>
-                        </div>
-                    </div>
+                    <button class="shop-item locked" id="stoneflower-item" type="button" data-artifact="stoneflower">
+                        <span class="lock-overlay" aria-hidden="true">🔒</span>
+                        <img src="assets/art_stoneflower.png" alt="" class="item-img-small">
+                        <span class="item-info">
+                            <span class="item-title">Каменный Цветок</span>
+                            <span id="stoneflower-price-label">Цена:</span>
+                            <span class="price" id="price-stoneflower">1000 KPN</span>
+                        </span>
+                    </button>
                 </div>
             </aside>
-
         </main>
 
-        <div id="daily-bonus" class="modal-overlay hidden">
+        <div id="daily-bonus" class="modal-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="daily-bonus-title">
             <div class="modal-box">
-                <h2>ХАБАР ОТ СИДОРОВИЧА</h2>
+                <h2 id="daily-bonus-title">ХАБАР ОТ СИДОРОВИЧА</h2>
                 <p>Ты зашел в Зону сегодня. Держи подгон.</p>
                 <img src="assets/icon_stash.png" alt="Хабар" class="bonus-img">
                 <div class="bonus-amount">+500 KPN</div>
-                <button class="btn-claim">ЗАБРАТЬ</button>
+                <button class="btn-claim" type="button">ЗАБРАТЬ</button>
             </div>
         </div>
-        
-        <div class="scanlines"></div>
+
+        <div class="scanlines" aria-hidden="true"></div>
     </div>
-    
-    <img src="assets/cursor_hand.gif" id="custom-cursor" class="custom-cursor">
-    
+
+    <img src="assets/cursor_hand.gif" id="custom-cursor" class="custom-cursor" alt="">
+
     <audio id="audio-click" src="assets/sounds/click.mp3" preload="auto"></audio>
     <audio id="audio-buy" src="assets/sounds/buy.mp3" preload="auto"></audio>
     <audio id="audio-daily-bonus" src="assets/sounds/daily_bonus.mp3" preload="auto"></audio>
     <audio id="audio-ambient" src="assets/sounds/ambient_music.mp3" preload="auto" loop></audio>
-    
+
     <script type="module" src="js/main.js"></script>
 </body>
 </html>
