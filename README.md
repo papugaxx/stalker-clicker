@@ -14,6 +14,13 @@ https://papugaxx.github.io/S.T.A.L.K.E.R.-Clicker/
 
 | `docs/screenshots` | 
 
+<img width="1873" height="916" alt="Снимок экрана 2026-06-26 235721" src="https://github.com/user-attachments/assets/ac69f82d-2a14-4257-9e6c-0f9ffe496e74" />
+
+<img width="1877" height="912" alt="Снимок экрана 2026-06-26 235819" src="https://github.com/user-attachments/assets/e943000d-54bd-4796-85df-a33d93164868" />
+
+<img width="1870" height="911" alt="Снимок экрана 2026-06-26 235731" src="https://github.com/user-attachments/assets/dd000f14-3767-4240-aa1f-df44c3023ce3" />
+
+
 ## Features
 
 - Clicker gameplay with coupon income (`KPN`).
